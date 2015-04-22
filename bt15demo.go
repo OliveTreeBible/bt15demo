@@ -25,7 +25,7 @@ func ExampleScrape(url string) {
   c.Exec("DROP TABLE IF EXISTS block_index")
   c.Exec("CREATE TABLE block_index (block_id INTEGER PRIMARY KEY, block_hash VARCHAR(255) NOT NULL, total_words INTEGER NOT NULL)")
   c.Exec("CREATE INDEX block_hash_idx ON block_index (block_hash)")
-  go use(c)
+  // go use(c)
   
   if err != nil {
     log.Fatal(err)
