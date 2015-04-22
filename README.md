@@ -41,7 +41,7 @@ export PATH=$PATH:$HOME/go_workspace/bin
 ```
 7) Either log out and back in **or** `source` your `.bash_profile`
 
-####Getting the Demo's Dependancies and Source 
+####Getting the Demo's Dependencies and Source 
 8) Now to install the packages we need to run the demo. These will be installed into your `$GOPATH`
 
 ```
@@ -73,7 +73,7 @@ This compiled the source code to a binary and installed it to `$GOPATH/bin` and 
 bt15demo
 ```
 
-You will see outpult that looks something like
+You will see output that looks something like
 
 ```
 ...
