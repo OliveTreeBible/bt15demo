@@ -1,3 +1,5 @@
+**This is a work in progress please be sure to update the repository before the presentation to be sure you have the latest code.**
+
 ##Installation
 ####Preparing the Go Environment
 
