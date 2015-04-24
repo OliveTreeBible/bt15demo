@@ -109,6 +109,7 @@ func hashTheChunks(chunks []ChunkInfo) ([]string) {
 }
 
 func indexTheHashes(hashes []string) (bool) {
+  // TODO:
   return false
 }
 
