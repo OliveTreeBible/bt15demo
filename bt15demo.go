@@ -7,7 +7,9 @@ import (
     "fmt"
     "crypto/sha256"
 	"encoding/hex"
-    "log"   
+    "log"
+	"flag"
+	"strings"
 )
 
 const (
@@ -21,17 +23,6 @@ const (
 type ChunkInfo struct {
   totalWords int
   chunk string
-}
-
-func excuteDemoForURL(documentURL string) {
-  doc := fetchTheDocument(documentURL)
-  
-  chunks := chunkTheText(doc)
-  hashes := hashTheChunks(chunks)
-  success := indexTheHashes(hashes)
-  if success {
-	fmt.Println("Done!")
-  }
 }
 
 func fetchTheDocument(documentURL string) (*goquery.Document) {
@@ -57,8 +48,18 @@ func chunkTheText(doc *goquery.Document) ([]ChunkInfo) {
   chunk := ""
   totalWords := 0
   
-  doc.Find("p").Each(func(i int, s *goquery.Selection) {
-    text := s.Text()
+  doc.Find("p,pre,div,span,h1,h2,h3").Each(func(i int, s *goquery.Selection) {
+	// A bit of a bug here as this does not handle tags embedded in the text at
+	// all so for instance if you have:
+	// 		'... some text<span>blah blah</span>more text...'
+	// you will get '... some textblah blahmore text...' which most likely isn't
+	// what you want. This is an area that would need to be discussed in detail
+	// if this approach was to be standardized for sharng annotations or for
+	// citations.
+    text := s.Text() 
+	if	len(chunk) > 0 && !strings.HasSuffix(chunk, " ") {
+	  chunk += " "
+	}
 	
     segmenter := segment.NewWordSegmenterDirect([]byte(text))
     for segmenter.Segment() {
@@ -87,10 +88,17 @@ func chunkTheText(doc *goquery.Document) ([]ChunkInfo) {
 	if totalWords >= 50 {
 	  chunks = append(chunks, ChunkInfo{totalWords, chunk})
 	  // Reset for the next round
+	  breakAccountedFor = false
 	  totalWords = 0
 	  chunk = ""
 	}
   })
+  
+  // In case there is a straggler 
+  if len(chunk) > 0 && totalWords > 0 {
+	chunks = append(chunks, ChunkInfo{totalWords, chunk})
+  }
+  
   return chunks
 }
 
@@ -114,5 +122,16 @@ func indexTheHashes(hashes []string) (bool) {
 }
 
 func main() {
-    excuteDemoForURL("https://www.gutenberg.org/files/39452/39452-h/39452-h.htm")
+  var documentURL string
+  flag.StringVar(&documentURL, "document-url", "https://www.gutenberg.org/files/39452/39452-h/39452-h.htm", "The document URL that you wish to process.")
+  flag.Parse()
+  
+  doc := fetchTheDocument(documentURL)
+  
+  chunks := chunkTheText(doc)
+  hashes := hashTheChunks(chunks)
+  success := indexTheHashes(hashes)
+  if success {
+	fmt.Println("Done!")
+  }
 }
