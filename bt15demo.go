@@ -44,49 +44,49 @@ func chunkTheText(docInfo *DocumentInfo) bool {
   
   docInfo.htmlDocument.Find("p,pre,div,span,h1,h2,h3").Each(func(i int, s *goquery.Selection) {
 	if !failed {
-	// A bit of a bug here as this does not handle tags embedded in the text at
-	// all so for instance if you have:
-	//		'... some text<span>blah blah</span>more text...'
-	// you will get '... some textblah blahmore text...' which most likely isn't
-	// what you want. This is an area that would need to be discussed in detail
-	// if this approach was to be standardized for sharng annotations or for
-	// citations.
-    text := s.Text() 
-	if	len(chunk) > 0 && !strings.HasSuffix(chunk, " ") {
-	  chunk += " "
-	}
-	positionIndex = i//docInfo.htmlDocument.IndexOfSelection(s)
-	
-    segmenter := segment.NewWordSegmenterDirect([]byte(text))
-    for segmenter.Segment() {
-        tokenBytes := segmenter.Bytes()
-        tokenType := segmenter.Type()
-		
-		
-		if tokenType != None   {
-				chunk += segmenter.Text()
-				breakAccountedFor = false
-				totalWords++
-		} else if tokenType == None {
-				if !breakAccountedFor {
-						chunk += " "
-						breakAccountedFor = true
-				}
-		} else {
-				fmt.Printf("Unknown TokenType(%d) encountered for token: %s", tokenType, tokenBytes)
-		}
-    }
-	
-    if err := segmenter.Err(); err != nil {
-		log.Fatal(err)
-        failed = true
-    } else if totalWords >= 50 {
-	  docInfo.chunks = append(docInfo.chunks, ChunkInfo{positionIndex, totalWords, chunk, ""})
-	  // Reset for the next round
-	  breakAccountedFor = false
-	  totalWords = 0
-	  chunk = ""
-	}
+	  // A bit of a bug here as this does not handle tags embedded in the text at
+	  // all so for instance if you have:
+	  //		'... some text<span>blah blah</span>more text...'
+	  // you will get '... some textblah blahmore text...' which most likely isn't
+	  // what you want. This is an area that would need to be discussed in detail
+	  // if this approach was to be standardized for sharng annotations or for
+	  // citations.
+	  text := s.Text() 
+	  if	len(chunk) > 0 && !strings.HasSuffix(chunk, " ") {
+		chunk += " "
+	  }
+	  positionIndex = i//docInfo.htmlDocument.IndexOfSelection(s)
+	  
+	  segmenter := segment.NewWordSegmenterDirect([]byte(text))
+	  for segmenter.Segment() {
+		  tokenBytes := segmenter.Bytes()
+		  tokenType := segmenter.Type()
+		  
+		  
+		  if tokenType != None   {
+				  chunk += segmenter.Text()
+				  breakAccountedFor = false
+				  totalWords++
+		  } else if tokenType == None {
+				  if !breakAccountedFor {
+						  chunk += " "
+						  breakAccountedFor = true
+				  }
+		  } else {
+				  fmt.Printf("Unknown TokenType(%d) encountered for token: %s", tokenType, tokenBytes)
+		  }
+	  }
+	  
+	  if err := segmenter.Err(); err != nil {
+		  log.Fatal(err)
+		  failed = true
+	  } else if totalWords >= 50 {
+		docInfo.chunks = append(docInfo.chunks, ChunkInfo{positionIndex, totalWords, chunk, ""})
+		// Reset for the next round
+		breakAccountedFor = false
+		totalWords = 0
+		chunk = ""
+	  }
 	}
   })
   
