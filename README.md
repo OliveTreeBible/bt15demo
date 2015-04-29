@@ -79,11 +79,12 @@ You will see output that looks something like
 
 ```
 ...
-Minor typographical errors punctuation and inconsistencies have been silently normalized Archaic spelling has been retained 
-====> 15 words 78aaee5c82ce7d28257b8259ffd291ce4bc5f2110bbbded9f298b988b62c559a
+Of Marian's history 402 If to the Flowers of your young hearts Instructions dews are given Oh be earnest as our Marian was To find the road to Heaven 402 If to the Flowers of your young hearts Instructions dews are given Oh be earnest as our Marian was To find the road to Heaven 
+====> 55 words ad4079a72f481c8c0dd83e1311da6c8dd08cf8439b91972758fa26c70ec7cc74
 
-Page 365 Tell truth has been changed to Tell true 
-====> 10 words 533bde1a50485de830d42664c307e9e8ace79e909bff7682aa79d1ca1efcb865
+FOOTNOTES 1 Bedford jail in which Bunyan was twelve years a prisoner 2 Tophet here means hell 3 Idle one 4 An old word meaning money or riches 5 This word means pleasant or delightful 6 Perspective glass is an old name for a telescope or spy glass 7 An atheist is one who does not believe that there is a God 8 That is of the body and blood of Christ 9 An instrument of music used in the time of John Bunyan somewhat like a very small piano 10 An old English coin bearing the figure of an angel 11 The word let here means hindrance 
+====> 108 words debf61244bc38adc724d1cc4a9c2035e82573f7f2ffbe1b312135d9c4898743d
+...
 ```
 
 ##SUCCESS!
